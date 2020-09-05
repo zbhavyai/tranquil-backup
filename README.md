@@ -1,10 +1,10 @@
 ## Tranquil Backup
-A simple yet functional command line differential backup utility for backuping up data to your external hard disks
+A simple yet functional command line differential backup utility for backing up of data to your external hard disks
 
 
 ### Features
 + Only copy the files that are newer or not present at the backup location, thus saving time and manual efforts
-+ Preserve the attributes of each of the files and folders during backup
++ Preserve the metadata of each of the files and folders during backup
 
 
 ### Usage

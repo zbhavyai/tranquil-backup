@@ -18,7 +18,7 @@ class FileDetails implements Comparable<FileDetails>
 	boolean hidden;
 	long fileSize;
 	String humanSize;
-	
+
 	FileDetails(File f, String path)
 	{
 		this.name = f.getName();
@@ -31,7 +31,7 @@ class FileDetails implements Comparable<FileDetails>
 		this.lastModifiedHuman.setTimeInMillis(this.lastModified);
 		this.hidden = f.isHidden();
 		this.fileSize = f.length();
-		
+
 		int count=0;
 		double s = (double)this.fileSize;
 
@@ -40,7 +40,7 @@ class FileDetails implements Comparable<FileDetails>
 			s = s/1024;
 			count++;
 		}
-		
+
 		switch(count)
 		{
 			case 0: this.humanSize = String.format("%.2f %s",s, " B"); break;
@@ -49,7 +49,7 @@ class FileDetails implements Comparable<FileDetails>
 			case 3: this.humanSize = String.format("%.2f %s",s, "GB"); break;
 			case 4: this.humanSize = String.format("%.2f %s",s, "TB"); break;
 		}
-		
+
 //		Calendar calendar = Calendar.getInstance();
 //		calendar.setTimeInMillis(this.lastModified);
 //		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -70,7 +70,7 @@ class FileDetails implements Comparable<FileDetails>
 		pw.println("------------------------------------------------------------");
 	}
 
-	
+
 	/**
 	 * Return Code List
 	 * 100 = names don't match, source name is lower -> meaning missing from destination
@@ -81,32 +81,32 @@ class FileDetails implements Comparable<FileDetails>
 	 */
 	@Override
 	public int compareTo(FileDetails o)
-	{	
+	{
 		String compareSrc = this.fullPath.substring(this.basePath.length());
 		String compareDst = o.fullPath.substring(o.basePath.length());
-		
+
 		if(compareSrc.compareToIgnoreCase(compareDst) < 0)
 		{
 			return 100;
 		}
-		
+
 		else if(compareSrc.compareToIgnoreCase(compareDst) > 0)
 		{
 			return 900;
 		}
-		
-		else	//(compareSrc.equals(compareDst)) 
-		{	
+
+		else	//(compareSrc.equals(compareDst))
+		{
 			if((this.lastModified == o.lastModified) || (this.isDirectory))
 			{
 				return 500;
 			}
-			
+
 			else if(this.lastModified > o.lastModified)
 			{
 				return 200;
 			}
-			
+
 			else
 			{
 				return 800;
