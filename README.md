@@ -5,6 +5,7 @@ A simple yet functional command line differential backup utility for backing up 
 ### Features
 + Only copy the files that are newer or not present at the backup location, thus saving time and manual efforts
 + Preserve the metadata of each of the files and folders during backup
++ Easily skip the folders that you don't want as part of back up by simply enlisting them in skipList.txt
 
 
 ### Usage

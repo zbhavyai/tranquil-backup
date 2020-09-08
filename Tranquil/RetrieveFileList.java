@@ -1,13 +1,16 @@
 package Tranquil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Collections;
 
 class RetrieveFileList
 {
-	ArrayList<File> allFiles = new ArrayList<>();
+	ArrayList<File> allFiles;
+	ArrayList<File> skipList;
 	String basePath;
 	long totalFileCount;
 	long totalDirectoryCount;
@@ -19,6 +22,34 @@ class RetrieveFileList
 	{
 		pw = new PrintWriter(System.out, true);
 		pe = new PrintWriter(System.err, true);
+
+		this.allFiles = new ArrayList<>();
+
+		//read the folder skip list
+		this.skipList = new ArrayList<>();
+		File skipFile = new File("skipList.txt");
+
+		try
+		{
+			Scanner sc = new Scanner(skipFile);
+			File skipName;
+
+			while(sc.hasNext())
+			{
+				skipName = new File(sc.nextLine());
+
+				if(skipName.exists() && skipName.isDirectory())
+				{
+					skipList.add(skipName.getAbsoluteFile());
+				}
+			}
+		}
+
+		catch(FileNotFoundException e)
+		{
+			pw.println("[INFO] No directories to be skipped");
+		}
+
 
 		File f = new File(path);
 		this.basePath = f.getAbsolutePath();
@@ -64,7 +95,7 @@ class RetrieveFileList
 
 		for(File f : fileList)
 		{
-			//windows skip list
+			//windows default skip list
 			if((f.getName().contains("$RECYCLE.BIN")) || (f.getName().equals("System Volume Information")))
 			{
 				continue;
@@ -78,9 +109,24 @@ class RetrieveFileList
 
 			else if(f.isDirectory())
 			{
-				allFiles.add(f);
-				totalDirectoryCount++;
-				retrieve(f.getAbsolutePath());
+				boolean skipOrNot = false;
+
+				for(int i=0; i<skipList.size(); i++)
+				{
+					if(skipList.get(i).getAbsolutePath().equals(f.getAbsolutePath()))
+					{
+						skipOrNot = true;
+						break;
+					}
+				}
+
+
+				if(skipOrNot == false)
+				{
+					allFiles.add(f);
+					totalDirectoryCount++;
+					retrieve(f.getAbsolutePath());
+				}
 			}
 		}
 	}

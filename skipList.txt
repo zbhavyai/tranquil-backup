@@ -1,0 +1,4 @@
+D:\Dont\Copy\this\Folder1\
+D:\Dont\Copy\this\Folder2\
+/home/dont/backup/this/location1
+/home/dont/backup/this/location2
